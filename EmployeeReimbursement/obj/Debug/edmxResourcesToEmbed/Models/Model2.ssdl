@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EmployeeClaimReimbursementSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EmployeeClaimReimbursementSystem.dbo.tblClaimApprovalDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tblClaimApprovalDetails">
+    <Key>
+      <PropertyRef Name="ClaimID" />
+      <PropertyRef Name="ApproverID" />
+    </Key>
+    <Property Name="ClaimID" Type="int" Nullable="false" />
+    <Property Name="ApproverID" Type="int" Nullable="false" />
+    <Property Name="ApproverComment" Type="nvarchar" MaxLength="150" />
+    <Property Name="ApproverType" Type="nchar" MaxLength="10" />
+    <Property Name="LastUpdatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="tblClaimMaster">
+    <Key>
+      <PropertyRef Name="ClaimID" />
+    </Key>
+    <Property Name="ClaimID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="150" />
+    <Property Name="RequestType" Type="nchar" MaxLength="10" />
+    <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="Status" Type="nchar" MaxLength="10" />
+    <Property Name="CreatedOn" Type="datetime" />
+  </EntityType>
+  <EntityType Name="tblClaimTransaction">
+    <Key>
+      <PropertyRef Name="TransactionID" />
+    </Key>
+    <Property Name="TransactionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClaimID" Type="int" />
+    <Property Name="SubDescription" Type="nvarchar" MaxLength="50" />
+    <Property Name="Amount" Type="int" />
+    <Property Name="UploadedFileName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblDepartment">
+    <Key>
+      <PropertyRef Name="DepartmentID" />
+    </Key>
+    <Property Name="DepartmentID" Type="int" Nullable="false" />
+    <Property Name="DepartmentName" Type="nvarchar" MaxLength="256" />
+  </EntityType>
+  <EntityType Name="tblRoles">
+    <Key>
+      <PropertyRef Name="RoleID" />
+    </Key>
+    <Property Name="RoleID" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="RoleType" Type="nvarchar" MaxLength="256" />
+  </EntityType>
+  <EntityType Name="tblUserRoles">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="RoleID" Type="nvarchar" MaxLength="128" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tblUsers">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="Forename" Type="nvarchar" MaxLength="255" />
+    <Property Name="Surname" Type="nvarchar" MaxLength="255" />
+    <Property Name="Address" Type="nvarchar(max)" />
+    <Property Name="Email" Type="nvarchar" MaxLength="256" />
+    <Property Name="PasswordHash" Type="nvarchar(max)" />
+    <Property Name="RoleID" Type="nvarchar" MaxLength="128" />
+    <Property Name="DepartmentID" Type="int" />
+    <Property Name="PhoneNumber" Type="nvarchar(max)" />
+    <Property Name="PhoneNumberConfirmed" Type="bit" />
+    <Property Name="ManagerID" Type="nvarchar" MaxLength="128" />
+    <Property Name="TwoFactorEnabled" Type="bit" />
+    <Property Name="LastLogin" Type="datetime" />
+    <Property Name="Active" Type="bit" />
+  </EntityType>
+  <Association Name="FK_tblClaimApprovalDetails_tblClaimMaster">
+    <End Role="tblClaimMaster" Type="Self.tblClaimMaster" Multiplicity="1" />
+    <End Role="tblClaimApprovalDetails" Type="Self.tblClaimApprovalDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblClaimMaster">
+        <PropertyRef Name="ClaimID" />
+      </Principal>
+      <Dependent Role="tblClaimApprovalDetails">
+        <PropertyRef Name="ClaimID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblClaimMaster_tblUsers">
+    <End Role="tblUsers" Type="Self.tblUsers" Multiplicity="1" />
+    <End Role="tblClaimMaster" Type="Self.tblClaimMaster" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblUsers">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="tblClaimMaster">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblClaimTransaction_tblClaimMaster">
+    <End Role="tblClaimMaster" Type="Self.tblClaimMaster" Multiplicity="0..1" />
+    <End Role="tblClaimTransaction" Type="Self.tblClaimTransaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblClaimMaster">
+        <PropertyRef Name="ClaimID" />
+      </Principal>
+      <Dependent Role="tblClaimTransaction">
+        <PropertyRef Name="ClaimID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblUserRoles_tblRoles">
+    <End Role="tblRoles" Type="Self.tblRoles" Multiplicity="1" />
+    <End Role="tblUserRoles" Type="Self.tblUserRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblRoles">
+        <PropertyRef Name="RoleID" />
+      </Principal>
+      <Dependent Role="tblUserRoles">
+        <PropertyRef Name="RoleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblUsers_tblDepartment">
+    <End Role="tblRoles" Type="Self.tblRoles" Multiplicity="0..1" />
+    <End Role="tblUsers" Type="Self.tblUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblRoles">
+        <PropertyRef Name="RoleID" />
+      </Principal>
+      <Dependent Role="tblUsers">
+        <PropertyRef Name="RoleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="EmployeeClaimReimbursementSystemModelStoreContainer">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblClaimMaster" EntityType="Self.tblClaimMaster" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblClaimTransaction" EntityType="Self.tblClaimTransaction" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblDepartment" EntityType="Self.tblDepartment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblRoles" EntityType="Self.tblRoles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblUserRoles" EntityType="Self.tblUserRoles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblUsers" EntityType="Self.tblUsers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblClaimApprovalDetails" EntityType="Self.tblClaimApprovalDetails" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tblClaimApprovalDetails].[ClaimID] AS [ClaimID], 
+    [tblClaimApprovalDetails].[ApproverID] AS [ApproverID], 
+    [tblClaimApprovalDetails].[ApproverComment] AS [ApproverComment], 
+    [tblClaimApprovalDetails].[ApproverType] AS [ApproverType], 
+    [tblClaimApprovalDetails].[LastUpdatedDate] AS [LastUpdatedDate]
+    FROM [dbo].[tblClaimApprovalDetails] AS [tblClaimApprovalDetails]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_tblClaimApprovalDetails_tblClaimMaster" Association="Self.FK_tblClaimApprovalDetails_tblClaimMaster">
+      <End Role="tblClaimMaster" EntitySet="tblClaimMaster" />
+      <End Role="tblClaimApprovalDetails" EntitySet="tblClaimApprovalDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblClaimMaster_tblUsers" Association="Self.FK_tblClaimMaster_tblUsers">
+      <End Role="tblUsers" EntitySet="tblUsers" />
+      <End Role="tblClaimMaster" EntitySet="tblClaimMaster" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblClaimTransaction_tblClaimMaster" Association="Self.FK_tblClaimTransaction_tblClaimMaster">
+      <End Role="tblClaimMaster" EntitySet="tblClaimMaster" />
+      <End Role="tblClaimTransaction" EntitySet="tblClaimTransaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblUserRoles_tblRoles" Association="Self.FK_tblUserRoles_tblRoles">
+      <End Role="tblRoles" EntitySet="tblRoles" />
+      <End Role="tblUserRoles" EntitySet="tblUserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblUsers_tblDepartment" Association="Self.FK_tblUsers_tblDepartment">
+      <End Role="tblRoles" EntitySet="tblRoles" />
+      <End Role="tblUsers" EntitySet="tblUsers" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

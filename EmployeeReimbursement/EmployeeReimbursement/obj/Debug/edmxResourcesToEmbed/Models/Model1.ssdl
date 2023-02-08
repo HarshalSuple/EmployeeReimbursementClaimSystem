@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EmployeeReimbursementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EmployeeReimbursement.dbo.tblApprovalLevelMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tblApprovalLevelMaster">
+    <Key>
+      <PropertyRef Name="ApprovallevelId" />
+    </Key>
+    <Property Name="ApprovallevelId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EmployeeReimbursement.dbo.tblClaimMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tblClaimMaster">
+    <Key>
+      <PropertyRef Name="ClaimId" />
+    </Key>
+    <Property Name="ClaimId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" />
+    <Property Name="UserId" Type="int" />
+    <Property Name="Status" Type="nvarchar" MaxLength="50" />
+    <Property Name="ClaimType" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreationDate" Type="datetime" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EmployeeReimbursement.dbo.tblClaimTransaction' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tblClaimTransaction">
+    <Key>
+      <PropertyRef Name="TransactionId" />
+    </Key>
+    <Property Name="TransactionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Claimid" Type="int" />
+    <Property Name="UserId" Type="int" />
+    <Property Name="ApprovalLevelId" Type="int" />
+    <Property Name="FileUpload" Type="nvarchar" MaxLength="150" />
+    <Property Name="CreationDate" Type="datetime" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EmployeeReimbursement.dbo.tblClaimWorkFlow' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tblClaimWorkFlow">
+    <Key>
+      <PropertyRef Name="ClaimworkflowId" />
+    </Key>
+    <Property Name="ClaimworkflowId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ClaimId" Type="int" />
+    <Property Name="ApprovallevelId" Type="int" />
+  </EntityType>
+  <EntityType Name="tblDepartment">
+    <Key>
+      <PropertyRef Name="DepartmentId" />
+    </Key>
+    <Property Name="DepartmentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DepartmentName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EmployeeReimbursement.dbo.tblDesignation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="tblDesignation">
+    <Key>
+      <PropertyRef Name="DesignationId" />
+    </Key>
+    <Property Name="DesignationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Designation" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tblUsers">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+    <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Gender" Type="varchar" MaxLength="10" />
+    <Property Name="PasswordHash" Type="nvarchar" MaxLength="50" />
+    <Property Name="DepartmentId" Type="int" />
+    <Property Name="DesignationId" Type="int" />
+    <Property Name="ReportingManager" Type="nvarchar" MaxLength="50" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityContainer Name="EmployeeReimbursementModelStoreContainer">
+    <EntitySet Name="tblDepartment" EntityType="Self.tblDepartment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblUsers" EntityType="Self.tblUsers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblApprovalLevelMaster" EntityType="Self.tblApprovalLevelMaster" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tblApprovalLevelMaster].[ApprovallevelId] AS [ApprovallevelId], 
+    [tblApprovalLevelMaster].[Description] AS [Description]
+    FROM [dbo].[tblApprovalLevelMaster] AS [tblApprovalLevelMaster]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tblClaimMaster" EntityType="Self.tblClaimMaster" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tblClaimMaster].[ClaimId] AS [ClaimId], 
+    [tblClaimMaster].[Description] AS [Description], 
+    [tblClaimMaster].[UserId] AS [UserId], 
+    [tblClaimMaster].[Status] AS [Status], 
+    [tblClaimMaster].[ClaimType] AS [ClaimType], 
+    [tblClaimMaster].[CreationDate] AS [CreationDate]
+    FROM [dbo].[tblClaimMaster] AS [tblClaimMaster]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tblClaimTransaction" EntityType="Self.tblClaimTransaction" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tblClaimTransaction].[TransactionId] AS [TransactionId], 
+    [tblClaimTransaction].[Claimid] AS [Claimid], 
+    [tblClaimTransaction].[UserId] AS [UserId], 
+    [tblClaimTransaction].[ApprovalLevelId] AS [ApprovalLevelId], 
+    [tblClaimTransaction].[FileUpload] AS [FileUpload], 
+    [tblClaimTransaction].[CreationDate] AS [CreationDate]
+    FROM [dbo].[tblClaimTransaction] AS [tblClaimTransaction]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tblClaimWorkFlow" EntityType="Self.tblClaimWorkFlow" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tblClaimWorkFlow].[ClaimworkflowId] AS [ClaimworkflowId], 
+    [tblClaimWorkFlow].[ClaimId] AS [ClaimId], 
+    [tblClaimWorkFlow].[ApprovallevelId] AS [ApprovallevelId]
+    FROM [dbo].[tblClaimWorkFlow] AS [tblClaimWorkFlow]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="tblDesignation" EntityType="Self.tblDesignation" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [tblDesignation].[DesignationId] AS [DesignationId], 
+    [tblDesignation].[Designation] AS [Designation]
+    FROM [dbo].[tblDesignation] AS [tblDesignation]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>
