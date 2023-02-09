@@ -162,9 +162,11 @@ namespace EmployeeReimbursement.Controllers
             return View();
         }
 
-        public ActionResult NewClaim()
+        public ActionResult NewClaim(tblClaimMaster tblClaimMaster)
         {
-            return View();
+            db.tblClaimMasters.Add(tblClaimMaster);
+            db.SaveChanges();
+            return RedirectToAction("UserDashboard");
         }
 
         protected override void Dispose(bool disposing)
