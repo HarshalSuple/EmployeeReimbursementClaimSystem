@@ -215,7 +215,7 @@
                                         </td>
                                         <td>
                                             <div class="editor-field">
-                                                <input class="text-box single-line" name="UploadedFileName[0]" type="file" value="" />
+                                                <input class="text-box single-line" name="UploadedFileName[0]" type="file" value="" accept="image/png, image/jpeg, image/jpg" />
                                             </div>
                                         </td>
                                         <td> 
@@ -270,7 +270,7 @@
                     '<input type="text" class="text-box single-line" name="Amount[' + counter + ']" value="" required="required" />' +
                     '</td>' +
                     '<td>' +
-                    '<input type="text" class="text-box single-line" name="UploadedFileName[' + counter + ']" value="" required="required" />' +
+                    '<input type="file" class="text-box single-line" name="UploadedFileName[' + counter + ']" value="" accept="image/png, image/jpeg, image/jpg" required="required" />' +
                     '</td>' +
                     '<td>' +
                     '<button type="button" class="btn btn-primary" onclick="removeTr(' + counter + ');">Delete</button>' +
